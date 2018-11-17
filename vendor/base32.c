@@ -224,10 +224,6 @@ ENC_DEC_DEFN(rfc4648);
 ENC_DEC_DEFN(triacontakia);
 ENC_DEC_DEFN(zbase32);
 
-#define INTERACTIVE_BASE32_TEST 1
-
-#if defined INTERACTIVE_BASE32_TEST
-
 void demo(
     char *label,
     char *in,
@@ -252,9 +248,11 @@ int main(int argc, char **argv) {
     fgets(in, 1023, stdin);
     in[strlen(in) - 1] = 0;
 
-    demo("zbase32", in, zbase32_encode, zbase32_decode);
+    demo("crockford",     in, crockford_encode,     crockford_decode);
+    demo("nintendo",      in, nintendo_encode,      nintendo_decode);
+    demo("rfc4648",       in, rfc4648_encode,       rfc4648_decode);
+    demo("triacontakia",  in, triacontakia_encode,  triacontakia_decode);
+    demo("zbase32",       in, zbase32_encode,       zbase32_decode);
 
     return 0;
 }
-
-#endif
