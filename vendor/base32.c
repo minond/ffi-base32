@@ -210,19 +210,44 @@ char *create_decode_table(char *encode_table, char *out) { // create simple deco
     return out;
 }
 
-#if defined (INTERACTIVE_BASE32_TEST)
+char *zbase32_encode(char *in, char *out) {
+    return b32e(in, strlen(in), out, b32e_zbase32);
+}
+
+char *zbase32_decode(char *in, char *out) {
+    return b32d(in, strlen(in), out, b32d_zbase32);
+}
+
+#define INTERACTIVE_BASE32_TEST 1
+
+#if defined INTERACTIVE_BASE32_TEST
+
+void demo(
+    char *label,
+    char *in,
+    char* (*encoder)(char*, char*),
+    char* (*decoder)(char*, char*)
+) {
+    char encoded[1024], decoded[1024];
+    memset(encoded, 0, 1024);
+    memset(decoded, 0, 1024);
+
+    encoder(in, encoded);
+    decoder(encoded, decoded);
+
+    fprintf(stdout, "%s -> %s -> %s -> %s\n", label, in, encoded, decoded);
+}
 
 int main(int argc, char **argv) {
-    char temp[1024], temp2[1512];
-    memset(temp, 0, 1024);
-    memset(temp2, 0, 1512);
+    char in[1024];
+    memset(in, 0, 1024);
+
     fprintf(stdout, "String> ");
-    fgets(temp, 1023, stdin);
-    fprintf(stdout, "crockford    -> %s\n", b32e(temp, strlen(temp), temp2, b32e_crockford));
-    fprintf(stdout, "rfc4648      -> %s\n", b32e(temp, strlen(temp), temp2, b32e_rfc4648));
-    fprintf(stdout, "zbase32      -> %s\n", b32e(temp, strlen(temp), temp2, b32e_zbase32));
-    fprintf(stdout, "triacontakia -> %s\n", b32e(temp, strlen(temp), temp2, b32e_triacontakia));
-    fprintf(stdout, "nintendo     -> %s\n", b32e(temp, strlen(temp), temp2, b32e_nintendo));
+    fgets(in, 1023, stdin);
+    in[strlen(in) - 1] = 0;
+
+    demo("zbase32", in, zbase32_encode, zbase32_decode);
+
     return 0;
 }
 
