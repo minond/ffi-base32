@@ -3,6 +3,8 @@ require "minitest/autorun"
 require "./lib/ffi/base32"
 
 class ::FFI::Base32::Test < Minitest::Test
+  parallelize_me!
+
   def self.suite(algo)
     define_method :"test_#{algo}_encode_decode_match" do
       assert_encode_decode_equal algo, ""
