@@ -25,6 +25,14 @@
 #include <stdlib.h>
 #include "pstdint.h"
 
+#define ENC_DEC_DEFN(label) \
+    char *label##_encode(char *in, char *out) { \
+        return b32e(in, strlen(in), out, b32e_##label); \
+    } \
+    char *label##_decode(char *in, char *out) { \
+        return b32d(in, strlen(in), out, b32d_##label); \
+    }
+
 /* Encoding/Decoding Tables */
 static unsigned char b32e_crockford[] = "0123456789abcdefghjkmnpqrstvwxyz";
 static unsigned char b32d_crockford[] = {
@@ -210,13 +218,11 @@ char *create_decode_table(char *encode_table, char *out) { // create simple deco
     return out;
 }
 
-char *zbase32_encode(char *in, char *out) {
-    return b32e(in, strlen(in), out, b32e_zbase32);
-}
-
-char *zbase32_decode(char *in, char *out) {
-    return b32d(in, strlen(in), out, b32d_zbase32);
-}
+ENC_DEC_DEFN(crockford);
+ENC_DEC_DEFN(nintendo);
+ENC_DEC_DEFN(rfc4648);
+ENC_DEC_DEFN(triacontakia);
+ENC_DEC_DEFN(zbase32);
 
 #define INTERACTIVE_BASE32_TEST 1
 
