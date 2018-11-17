@@ -1,0 +1,7 @@
+Ruby FFI bindings for base32 encoding and decoding.
+
+TODO:
+
+  - Fixing encode's weirdly encoded ouput.
+  - Better dll lookup like in https://github.com/abrandoned/ffi-fasttext.
+  - Don't hardcode dll extension, also like in ffi-fasttext.
