@@ -4,7 +4,7 @@ module FFI
   module Base32
     extend FFI::Library
 
-    ffi_lib "vendor/libbase32.dylib"
+    ffi_lib "vendor/libbase32.#{::FFI::Platform::LIBSUFFIX}"
 
     def self.bind(label)
       attach_function :"_#{label}_encode", :"#{label}_encode", [:buffer_in, :buffer_out], :string
